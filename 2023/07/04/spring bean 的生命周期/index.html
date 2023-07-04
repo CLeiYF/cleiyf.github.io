@@ -46,21 +46,22 @@
   };
 </script>
 
-  <meta name="description" content="Spring,Spring MVC,Spring Boot 之间的关系?Spring 包含了多个功能模块（上面刚刚提高过），其中最重要的是 Spring-Core（主要提供 IoC 依赖注入功能的支持） 模块， Spring 中的其他模块（比如 Spring MVC）的功能实现基本都需要依赖于该模块。 下图对应的是 Spring4.x 版本。目前最新的 5.x 版本中 Web 模块的 Portle">
+  <meta name="description" content="Spring Bean 的生命周期1.基础知识1.1什么是IoC？IoC，控制反转，想必大家都知道，所谓的控制反转，就是把 new 对象的权利交给容器，所有的对象都被容器控制，这就叫所谓的控制反转。 IoC 很好地体现了面向对象设计法则之一 —— 好莱坞法则：“别找我们，我们找你”，即由 IoC 容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。 理解好 IoC 的关键是要明确 “谁控制谁，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="clei">
-<meta property="og:url" content="http://cleiyf.github.io/2023/07/04/Spring%E3%80%81SpringMVC%E3%80%81SpringBoot%20%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
+<meta property="og:url" content="http://cleiyf.github.io/2023/07/04/spring%20bean%20%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
 <meta property="og:site_name" content="clei">
-<meta property="og:description" content="Spring,Spring MVC,Spring Boot 之间的关系?Spring 包含了多个功能模块（上面刚刚提高过），其中最重要的是 Spring-Core（主要提供 IoC 依赖注入功能的支持） 模块， Spring 中的其他模块（比如 Spring MVC）的功能实现基本都需要依赖于该模块。 下图对应的是 Spring4.x 版本。目前最新的 5.x 版本中 Web 模块的 Portle">
+<meta property="og:description" content="Spring Bean 的生命周期1.基础知识1.1什么是IoC？IoC，控制反转，想必大家都知道，所谓的控制反转，就是把 new 对象的权利交给容器，所有的对象都被容器控制，这就叫所谓的控制反转。 IoC 很好地体现了面向对象设计法则之一 —— 好莱坞法则：“别找我们，我们找你”，即由 IoC 容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。 理解好 IoC 的关键是要明确 “谁控制谁，">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/iaIdQfEric9TxoStuXgibWVJicKP4dmZo4I9mfOmdk4aBLq1YbwbYtU2tjVwkzJpLicYc0tamXglrITnDOy8cib7YSsg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
-<meta property="article:published_time" content="2023-07-04T08:45:31.394Z">
-<meta property="article:modified_time" content="2022-10-10T03:39:48.114Z">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/sXFqMxQoVLFNibeQGhLjcm1tliaud7OBYY9gZ8HQ4E62Zmq75yNYc4rkp2XBJYQnibSGMSYSia4Hah8rX3fDhricBXw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/sXFqMxQoVLFNibeQGhLjcm1tliaud7OBYYCJpaTzjpb2HlXl0ZeOfMx0ADkicU8xJjLWsl7NW5WqSy2zsPMUD04rg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2023-07-04T09:22:08.355Z">
+<meta property="article:modified_time" content="2022-10-18T06:34:09.192Z">
 <meta property="article:author" content="lei">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/iaIdQfEric9TxoStuXgibWVJicKP4dmZo4I9mfOmdk4aBLq1YbwbYtU2tjVwkzJpLicYc0tamXglrITnDOy8cib7YSsg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/sXFqMxQoVLFNibeQGhLjcm1tliaud7OBYY9gZ8HQ4E62Zmq75yNYc4rkp2XBJYQnibSGMSYSia4Hah8rX3fDhricBXw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
 
-<link rel="canonical" href="http://cleiyf.github.io/2023/07/04/Spring%E3%80%81SpringMVC%E3%80%81SpringBoot%20%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">
+<link rel="canonical" href="http://cleiyf.github.io/2023/07/04/spring%20bean%20%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
 
 <script id="page-configurations">
@@ -180,7 +181,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://cleiyf.github.io/2023/07/04/Spring%E3%80%81SpringMVC%E3%80%81SpringBoot%20%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">
+    <link itemprop="mainEntityOfPage" href="http://cleiyf.github.io/2023/07/04/spring%20bean%20%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpeg">
@@ -203,14 +204,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-07-04 16:45:31" itemprop="dateCreated datePublished" datetime="2023-07-04T16:45:31+08:00">2023-07-04</time>
+              <time title="Created: 2023-07-04 17:22:08" itemprop="dateCreated datePublished" datetime="2023-07-04T17:22:08+08:00">2023-07-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-10 11:39:48" itemprop="dateModified" datetime="2022-10-10T11:39:48+08:00">2022-10-10</time>
+                <time title="Modified: 2022-10-18 14:34:09" itemprop="dateModified" datetime="2022-10-18T14:34:09+08:00">2022-10-18</time>
               </span>
 
           
@@ -224,14 +225,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Spring-Spring-MVC-Spring-Boot-之间的关系"><a href="#Spring-Spring-MVC-Spring-Boot-之间的关系" class="headerlink" title="Spring,Spring MVC,Spring Boot 之间的关系?"></a>Spring,Spring MVC,Spring Boot 之间的关系?</h1><p>Spring 包含了多个功能模块（上面刚刚提高过），其中最重要的是 Spring-Core（主要提供 IoC 依赖注入功能的支持） 模块， Spring 中的其他模块（比如 Spring MVC）的功能实现基本都需要依赖于该模块。</p>
-<p>下图对应的是 Spring4.x 版本。目前最新的 5.x 版本中 Web 模块的 Portlet 组件已经被废弃掉，同时增加了用于异步响应式处理的 WebFlux 组件。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/iaIdQfEric9TxoStuXgibWVJicKP4dmZo4I9mfOmdk4aBLq1YbwbYtU2tjVwkzJpLicYc0tamXglrITnDOy8cib7YSsg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p>​                                                                            Spring主要模块</p>
-<p>Spring MVC 是 Spring 中的一个很重要的模块，主要赋予 Spring 快速构建 MVC 架构的 Web 程序的能力。MVC 是模型(Model)、视图(View)、控制器(Controller)的简写，其核心思想是通过将业务逻辑、数据、显示分离来组织代码。</p>
-<p>使用 Spring 进行开发各种配置过于麻烦比如开启某些 Spring 特性时，需要用 XML 或 Java 进行显式配置。于是，Spring Boot 诞生了！</p>
-<p>Spring 旨在简化 J2EE 企业应用程序开发。Spring Boot 旨在简化 Spring 开发（减少配置文件，开箱即用！）。</p>
-<p>Spring Boot 只是简化了配置，如果你需要构建 MVC 架构的 Web 程序，你还是需要使用 Spring MVC 作为 MVC 框架，只是说 Spring Boot 帮你简化了 Spring MVC 的很多配置，真正做到开箱即用！</p>
+        <h1 id="Spring-Bean-的生命周期"><a href="#Spring-Bean-的生命周期" class="headerlink" title="Spring Bean 的生命周期"></a>Spring Bean 的生命周期</h1><h3 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1.基础知识"></a>1.基础知识</h3><h4 id="1-1什么是IoC？"><a href="#1-1什么是IoC？" class="headerlink" title="1.1什么是IoC？"></a>1.1什么是IoC？</h4><p>IoC，控制反转，想必大家都知道，所谓的控制反转，就是把 new 对象的权利交给容器，所有的对象都被容器控制，这就叫所谓的控制反转。</p>
+<p>IoC 很好地体现了面向对象设计法则之一 —— 好莱坞法则：“<strong>别找我们，我们找你</strong>”，即由 IoC 容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。</p>
+<p>理解好 IoC 的关键是要明确 “谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了”。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/sXFqMxQoVLFNibeQGhLjcm1tliaud7OBYY9gZ8HQ4E62Zmq75yNYc4rkp2XBJYQnibSGMSYSia4Hah8rX3fDhricBXw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p><strong>谁控制谁，控制什么？</strong></p>
+<p>传统 Java SE 程序设计，我们直接在对象内部通过 new 进行创建对象，是程序主动去创建依赖对象。而 IoC 是由专门一个容器来创建这些对象，即由 IoC 容器来控制对象的创建。</p>
+<ul>
+<li>谁控制谁？当然是 IoC 容器控制了对象；</li>
+<li>控制什么？主要控制了外部资源获取（不只是对象，比如包括文件等）。</li>
+</ul>
+<p><strong>为何是反转，哪些方面反转了？</strong></p>
+<p>有反转就有正转，传统应用程序是由我们自己在对象中主动控制去直接获取依赖对象，也就是正转，而反转则是由容器来帮忙创建及注入依赖对象。</p>
+<ul>
+<li>为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；</li>
+<li>哪些方面反转了？依赖对象的获取被反转了。</li>
+</ul>
+<h4 id="1-2-Bean-生命周期"><a href="#1-2-Bean-生命周期" class="headerlink" title="1.2  Bean 生命周期"></a>1.2  Bean 生命周期</h4><p>对 Prototype Bean 来说，当用户 getBean 获得 Prototype Bean 的实例后，IoC 容器就不再对当前实例进行管理，而是把管理权交由用户，此后再 getBean 生成的是新的实例。</p>
+<p><strong>所以我们描述 Bean 的生命周期，都是指的 Singleton Bean。</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/sXFqMxQoVLFNibeQGhLjcm1tliaud7OBYYCJpaTzjpb2HlXl0ZeOfMx0ADkicU8xJjLWsl7NW5WqSy2zsPMUD04rg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>Bean 生命周期过程：</p>
+<ul>
+<li><strong>实例化</strong>：第 1 步，实例化一个 Bean 对象；</li>
+<li><strong>属性赋值</strong>：第 2 步，为 Bean 设置相关属性和依赖；</li>
+<li><strong>初始化</strong>：初始化的阶段的步骤比较多，5、6 步是真正的初始化，第 3、4 步为在初始化前执行，第 7 步在初始化后执行，初始化完成之后，Bean 就可以被使用了；</li>
+<li><strong>销毁</strong>：第 8~10 步，第 8 步其实也可以算到销毁阶段，但不是真正意义上的销毁，而是先在使用前注册了销毁的相关调用接口，为了后面第 9、10 步真正销毁 Bean 时再执行相应的方法。</li>
+</ul>
 
     </div>
 
@@ -247,13 +266,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/04/@Autowired%E5%92%8C@Resource%20%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="prev" title="">
+    <a href="/2023/07/04/Spring%E3%80%81SpringMVC%E3%80%81SpringBoot%20%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" rel="prev" title="">
       <i class="fa fa-chevron-left"></i> 
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/07/04/spring%20bean%20%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" rel="next" title="">
-       <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -313,7 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Spring-MVC-Spring-Boot-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">Spring,Spring MVC,Spring Boot 之间的关系?</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">Spring Bean 的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E4%BB%80%E4%B9%88%E6%98%AFIoC%EF%BC%9F"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">1.1什么是IoC？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Bean-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">1.2  Bean 生命周期</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
